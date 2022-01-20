@@ -14,5 +14,7 @@
 <body>
     Person: ${p.name}
     Book: ${b.name}
+    Number of People: ${personCount}
+    Number of People: ${bookCount}
 </body>
 </html>

@@ -1,10 +1,10 @@
 package multipledatasources
 
-import grails.gorm.transactions.ReadOnly
+import grails.gorm.transactions.Transactional
 
 class PersonController {
 
-    @ReadOnly
+    @Transactional
     def index() {
         Person p = new Person(name: 'Joe')
         Book b = new Book(name: 'Name of the Wind')

@@ -1,18 +1,20 @@
 package multipledatasources
 
+import grails.testing.gorm.DataTest
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class PersonControllerSpec extends Specification implements ControllerUnitTest<PersonController> {
+class PersonControllerSpec extends Specification implements ControllerUnitTest<PersonController>, DataTest {
 
-    def setup() {
-    }
+    void "index"() {
+        given:
+        mockDomains(Person, Book)
 
-    def cleanup() {
-    }
+        when:
+        controller.index()
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
+        then:
+        Person.count() == 1
+        Book.count() == 1
     }
 }

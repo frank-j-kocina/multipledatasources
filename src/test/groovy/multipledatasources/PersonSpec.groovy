@@ -1,18 +1,29 @@
 package multipledatasources
 
+import grails.buildtestdata.BuildDataTest
+import grails.buildtestdata.mixin.Build
 import grails.testing.gorm.DomainUnitTest
 import spock.lang.Specification
 
-class PersonSpec extends Specification implements DomainUnitTest<Person> {
+@Build([Person])
+class PersonSpec extends Specification implements DomainUnitTest<Person>, BuildDataTest {
 
-    def setup() {
+    void 'save new, find, count'() {
+        given:
+        Person person = new Person(name: 'joe')
+        person.save(failOnError: true)
+
+        expect:
+        Person.findAllById(person.id) == [person]
+        Person.count() == 1
     }
 
-    def cleanup() {
-    }
+    void 'build, find, count'() {
+        given:
+        Person person = Person.build()
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
+        expect:
+        Person.findAllById(person.id) == [person]
+        Person.count() == 1
     }
 }

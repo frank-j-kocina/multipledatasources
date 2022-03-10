@@ -1,20 +1,26 @@
 package multipledatasources
 
-import grails.testing.gorm.DataTest
+import grails.buildtestdata.BuildDataTest
+import grails.buildtestdata.mixin.Build
 import grails.testing.web.controllers.ControllerUnitTest
 import spock.lang.Specification
 
-class PersonControllerSpec extends Specification implements ControllerUnitTest<PersonController>, DataTest {
+@Build([Book, Person])
+class PersonControllerSpec extends Specification implements ControllerUnitTest<PersonController>, BuildDataTest {
 
     void "index"() {
         given:
-        mockDomains(Person, Book)
+        Book.build()
+        Person.build()
+        new Book(name: 'Joe').save(failOnError: true)
+        new Person(name: 'Joe').save(failOnError: true)
 
         when:
         controller.index()
 
         then:
-        Person.count() == 1
-        Book.count() == 1
+        // 2 in test, 1 in controller
+        Person.count() == 3
+        Book.count() == 3
     }
 }
